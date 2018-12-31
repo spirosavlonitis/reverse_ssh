@@ -21,7 +21,7 @@ def ssh_connect(ip, user, password, command):
                 ssh_session.send("Can't change directory")
                 continue
             try:
-                #command += " & echo "
+                command += ";echo"      # gaurd against wrong commands
                 output = subprocess.check_output(command, shell=True)
                 ssh_session.send(output)
             except Exception as e:
