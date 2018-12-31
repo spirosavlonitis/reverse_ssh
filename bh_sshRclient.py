@@ -1,7 +1,5 @@
 import paramiko
 import subprocess
-import re
-
 
 def ssh_connect(ip, user, password, command):
     """Connect to a remote ssh server."""
@@ -17,9 +15,6 @@ def ssh_connect(ip, user, password, command):
         print(ssh_session.recv(1024))
         while True:
             command = ssh_session.recv(1024)
-            if re.match(r"^cd .*", command):
-                ssh_session.send("Can't change directory")
-                continue
             try:
                 command += ";echo"      # gaurd against wrong commands
                 output = subprocess.check_output(command, shell=True)
@@ -28,12 +23,6 @@ def ssh_connect(ip, user, password, command):
                 ssh_session.send(str(e))
         client.close()
     return
-
-
-
-
-
-
 
 ip = "192.168.1.3"
 username = "foo"
